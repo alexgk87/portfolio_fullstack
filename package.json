@@ -1,0 +1,17 @@
+{
+  "name": "portfolio-v1",
+  "version": "1.0.0",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@hono/node-server": "^1.12.2",
+    "@types/node": "^22.5.1",
+    "hono": "^4.5.9"
+  }
+}

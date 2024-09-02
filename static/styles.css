@@ -1,0 +1,27 @@
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 10px;
+    width: 100%;
+    height: auto;
+}
+
+.flex-item {
+    margin: 10px;
+    text-align: center;
+}
+
+.flex-item img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.flex-item h3 {
+    margin-top: 10px;
+}
+
+.div {
+    background-color: cornflowerblue;
+}
