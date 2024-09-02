@@ -8,7 +8,10 @@ import { join } from "path";
 const app = new Hono();
 
 app.use("/*", cors());
+
 app.use("/static/*", serveStatic({ root: "./" }));
+app.use("/img/*", serveStatic({ root: "./" }));
+app.use("/data/*", serveStatic({ root: "./" }));
 
 // Define a route for the root URL
 app.get("/", (index) => {

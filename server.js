@@ -9,6 +9,8 @@ var path_1 = require("path");
 var app = new hono_1.Hono();
 app.use("/*", (0, cors_1.cors)());
 app.use("/static/*", (0, serve_static_1.serveStatic)({ root: "./" }));
+app.use("/img/*", (0, serve_static_1.serveStatic)({ root: "./" }));
+app.use("/data/*", (0, serve_static_1.serveStatic)({ root: "./" }));
 // Define a route for the root URL
 app.get("/", function (index) {
     var html = (0, fs_1.readFileSync)((0, path_1.join)(__dirname, "index.html"), "utf-8");

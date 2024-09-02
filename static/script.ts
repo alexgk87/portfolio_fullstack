@@ -3,12 +3,13 @@ interface PortfolioItem {
     imageUrl: string;
 }
 
-const portfolioItems: PortfolioItem[] = [
-    { title: "PortfolioItem1", imageUrl: "./img/image1.png" },
-    { title: "PortfolioItem2", imageUrl: "./img/image2.png" },
-    { title: "PortfolioItem3", imageUrl: "./img/image3.png" },
-    { title: "PortfolioItem4", imageUrl: "./img/image4.png" }
-];
+async function fetchPortfolioItems(): Promise<PortfolioItem[]> {
+    const response = await fetch('../data/portfolioItems.json');
+    if (!response.ok) {
+        throw new Error('Could not fetch portfolio items.');
+    }
+    return response.json();
+}
 
 function createPortfolioItem(item: PortfolioItem): HTMLElement {
     const container = document.createElement('div');
@@ -27,13 +28,18 @@ function createPortfolioItem(item: PortfolioItem): HTMLElement {
     return container;
 }
 
-function loadPortfolio() {
-    const container = document.getElementById('portfolio-container');
-    if (container) {
-        portfolioItems.forEach(item => {
-            const portfolioItem = createPortfolioItem(item);
-            container.appendChild(portfolioItem);
-        });
+async function loadPortfolio() {
+    try {
+        const portfolioItems = await fetchPortfolioItems();
+        const container = document.getElementById('portfolio-container');
+        if (container) {
+            portfolioItems.forEach(item => {
+                const portfolioItem = createPortfolioItem(item);
+                container.appendChild(portfolioItem);
+            });
+        }
+    } catch (error) {
+        console.error('Failed to load portfolio items:', error);
     }
 }
 
