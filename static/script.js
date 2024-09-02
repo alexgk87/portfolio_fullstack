@@ -54,7 +54,7 @@ function createPortfolioItem(item) {
     var container = document.createElement('div');
     container.className = 'flex-item';
     var img = document.createElement('img');
-    img.src = item.imageUrl;
+    img.src = item.imageUrl && item.imageUrl.trim() !== "" ? item.imageUrl : '../img/placeholder-image.jpg';
     img.alt = item.title;
     var title = document.createElement('h3');
     title.textContent = item.title;

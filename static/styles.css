@@ -18,13 +18,16 @@ body {
 .flex-item {
     margin: 10px;
     text-align: center;
+    flex: 1 1 200px;
+    max-width: 300px;
 }
 
 .flex-item img {
-    max-width: 100%;
+    width: 100%;
     height: auto;
     display: block;
     border-radius: 18px;
+    object-fit: cover;
 }
 
 .flex-item h3 {
@@ -36,4 +39,14 @@ body {
     color: #333333;
     text-align: center;
     padding: 10px;
+}
+
+.footer {
+    background-color: #333333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }
