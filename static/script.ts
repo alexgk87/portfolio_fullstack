@@ -46,4 +46,11 @@ async function loadPortfolio() {
 document.addEventListener("DOMContentLoaded", () => {
     console.log("DOM fully loaded and parsed");
     loadPortfolio();
+
+    const newProjectButton = document.getElementById('new-project');
+    if (newProjectButton) {
+        newProjectButton.addEventListener('click', () => {
+            window.location.href = './new-project.html';
+        });
+    }
 });

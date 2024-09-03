@@ -92,4 +92,10 @@ function loadPortfolio() {
 document.addEventListener("DOMContentLoaded", function () {
     console.log("DOM fully loaded and parsed");
     loadPortfolio();
+    var newProjectButton = document.getElementById('new-project');
+    if (newProjectButton) {
+        newProjectButton.addEventListener('click', function () {
+            window.location.href = 'new-project.html';
+        });
+    }
 });
