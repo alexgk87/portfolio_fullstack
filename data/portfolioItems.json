@@ -1,18 +1,22 @@
 [
-    {
-        "title": "Portfolio Test 1",
-        "imageUrl": ""
-    },
-    {
-        "title": "Portfolio Test 2",
-        "imageUrl": "../img/2.png"
-    },
-    {
-        "title": "Portfolio Test 3",
-        "imageUrl": "../img/3.png"
-    },
-    {
-        "title": "Portfolio Test 4", 
-        "imageUrl": "../img/4.png"
-    }
+  {
+    "title": "Portfolio Item 1",
+    "imageUrl": "",
+    "description": "A very long description for Portfolio Item 1. This project was a lot of fun to work on and I learned a lot from it. I hope you enjoy it as much as I did!"
+  },
+  {
+    "title": "Portfolio Item 2",
+    "imageUrl": "",
+    "description": "Description for Portfolio Item 2"
+  },
+  {
+    "title": "Portfolio Item 3",
+    "imageUrl": "",
+    "description": "Description for Portfolio Item 3"
+  },
+  {
+    "title": "Portfolio Item 4",
+    "imageUrl": "",
+    "description": "Description for Portfolio Item 4"
+  }
 ]

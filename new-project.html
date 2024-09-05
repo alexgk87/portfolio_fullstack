@@ -10,6 +10,21 @@
     <div class="header">
         <h1>Create new project</h1>
     </div>
+    <div class="form-container">
+        <form id="addNewProject" method="post" action="/data">
+            <label for="title">Project Title:</label>
+            <input type="text" id="title" name="title" placeholder="Enter project title">
+
+            <!-- TO DO
+            <label for="image">Project Image:</label>
+            <input type="file" id="image" name="image">
+            -->
+            <label for="description">Project Description:</label>
+            <textarea id="description" name="description" placeholder="Enter project description"></textarea>
+            <br>
+            <button type="submit">Submit Project</button>
+        </form>
+    </div>
     <div class="footer">
         <p>&copy; 2024 Alexander K</p>
     </div>

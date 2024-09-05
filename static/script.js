@@ -34,6 +34,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var _this = this;
 function fetchPortfolioItems() {
     return __awaiter(this, void 0, void 0, function () {
         var response;
@@ -58,8 +59,12 @@ function createPortfolioItem(item) {
     img.alt = item.title;
     var title = document.createElement('h3');
     title.textContent = item.title;
-    container.appendChild(img);
+    var description = document.createElement('div');
+    description.className = 'description';
+    description.textContent = item.description;
     container.appendChild(title);
+    container.appendChild(img);
+    container.appendChild(description);
     return container;
 }
 function loadPortfolio() {
@@ -89,13 +94,62 @@ function loadPortfolio() {
         });
     });
 }
-document.addEventListener("DOMContentLoaded", function () {
-    console.log("DOM fully loaded and parsed");
-    loadPortfolio();
-    var newProjectButton = document.getElementById('new-project');
-    if (newProjectButton) {
-        newProjectButton.addEventListener('click', function () {
-            window.location.href = 'new-project.html';
+var newProjectButton = document.getElementById('new-project');
+if (newProjectButton) {
+    newProjectButton.addEventListener('click', function () {
+        window.location.href = './new-project';
+    });
+}
+document.addEventListener('DOMContentLoaded', function () {
+    var form = document.querySelector('form');
+    if (!form)
+        return;
+    form.addEventListener('submit', function (event) { return __awaiter(_this, void 0, void 0, function () {
+        var titleInput, descriptionInput, newProject, response, result, error_2;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    event.preventDefault();
+                    titleInput = document.getElementById('title');
+                    descriptionInput = document.getElementById('description');
+                    if (!titleInput || !descriptionInput)
+                        return [2 /*return*/];
+                    newProject = {
+                        title: titleInput.value,
+                        imageUrl: "",
+                        description: descriptionInput.value,
+                    };
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 4, , 5]);
+                    return [4 /*yield*/, fetch('/submit-project', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(newProject),
+                        })];
+                case 2:
+                    response = _a.sent();
+                    if (!response.ok) {
+                        throw new Error('Error creating new project');
+                    }
+                    return [4 /*yield*/, response.json()];
+                case 3:
+                    result = _a.sent();
+                    console.log('Success:', result);
+                    return [3 /*break*/, 5];
+                case 4:
+                    error_2 = _a.sent();
+                    console.error('There was a problem with the fetch operation:', error_2);
+                    return [3 /*break*/, 5];
+                case 5:
+                    window.location.href = '/';
+                    return [2 /*return*/];
+            }
         });
-    }
+    }); });
+});
+document.addEventListener("DOMContentLoaded", function () {
+    loadPortfolio();
 });

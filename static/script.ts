@@ -1,6 +1,7 @@
 interface PortfolioItem {
     title: string;
     imageUrl: string;
+    description: string;
 }
 
 async function fetchPortfolioItems(): Promise<PortfolioItem[]> {
@@ -22,8 +23,13 @@ function createPortfolioItem(item: PortfolioItem): HTMLElement {
     const title = document.createElement('h3');
     title.textContent = item.title;
 
-    container.appendChild(img);
+    const description = document.createElement('div');
+    description.className = 'description';
+    description.textContent = item.description;
+
     container.appendChild(title);
+    container.appendChild(img);
+    container.appendChild(description)
 
     return container;
 }
@@ -43,14 +49,57 @@ async function loadPortfolio() {
     }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    console.log("DOM fully loaded and parsed");
-    loadPortfolio();
+const newProjectButton = document.getElementById('new-project');
+if (newProjectButton) {
+    newProjectButton.addEventListener('click', () => {
+        window.location.href = './new-project';
+    });
+}
 
-    const newProjectButton = document.getElementById('new-project');
-    if (newProjectButton) {
-        newProjectButton.addEventListener('click', () => {
-            window.location.href = './new-project.html';
-        });
-    }
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('form');
+    if (!form) return;
+
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const titleInput = document.getElementById('title') as HTMLInputElement;
+        // const imageInput = document.getElementById('image') as HTMLInputElement; TO DO
+        const descriptionInput = document.getElementById('description') as HTMLInputElement;
+
+        if (!titleInput || !descriptionInput ) return;
+
+        const newProject = {
+            title: titleInput.value,
+            imageUrl: "",
+            description: descriptionInput.value,
+        };
+
+        try {
+            const response = await fetch('/submit-project', { 
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newProject),
+            });
+
+            if (!response.ok) {
+                throw new Error('Error creating new project');
+            }
+
+            const result = await response.json();
+            console.log('Success:', result);
+
+        } catch (error) {
+            console.error('There was a problem with the fetch operation:', error);
+        }
+
+        window.location.href = '/';
+    });
+});
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    loadPortfolio();
 });
