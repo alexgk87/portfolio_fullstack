@@ -23,11 +23,15 @@ function Experiences({ experiences }: { experiences :ExperiencesProps[] }) {
   return (
     <div>
       <h2>Experiences</h2>
-      {experiences.map((experience, index) => (
-        <div key={index}>
-          <p>{experience.experienceName}</p>
-        </div>
-      ))}
+      {experiences.length !== 0 ? (
+        experiences.map((experience, index) => (
+          <div key={index}>
+            <p>{experience.experienceName}</p>
+          </div>
+        ))
+      ) : (
+        <p>No experiences yet.</p>
+      )}
     </div>
   );
 }
@@ -68,7 +72,7 @@ function Contact({ email }) {
       setMessage("");
     }
   };
-
+  
   return (
     <div>
       <h2>Contact</h2>
@@ -107,7 +111,7 @@ function Contact({ email }) {
   );
 }
 
-function Projects({ projects }: { projects: ProjectProps[] }) {
+function Projects({ projects, deleteProject }: { projects: ProjectProps[], deleteProject: (index: number) => void }) {
   return (
     <div>
       <h2>Projects</h2>
@@ -115,9 +119,41 @@ function Projects({ projects }: { projects: ProjectProps[] }) {
         <div key={index}>
           <h3>{project.projectTitle}</h3>
           <p>{project.projectDescription}</p>
+          <button onClick={() => deleteProject(index)}>Delete</button>
         </div>
       ))}
     </div>
+  );
+}
+
+function CreateProject({ addProject }: { addProject: (project: ProjectProps) => void }) {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    addProject({ projectTitle: title, projectDescription: description });
+    setTitle("");
+    setDescription("");
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <h3>Create New Project</h3>
+      <div>
+        <label>
+          Project Title:
+          <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+        </label>
+      </div>
+      <div>
+        <label>
+          Project Description:
+          <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+        </label>
+      </div>
+      <button type="submit">Add Project</button>
+    </form>
   );
 }
 
@@ -130,10 +166,18 @@ function App() {
     { experienceName: "Website for customer Y" },
   ];
   const email = 'student@hiof.no'
-  const projects = [
+  const [projects, setProjects] = useState<ProjectProps[]>([
     { projectTitle: 'Project A', projectDescription: 'Description of Project A' },
     { projectTitle: 'Project B', projectDescription: 'Description of Project B' },
-  ];
+  ]);
+
+  const addProject = (project: ProjectProps) => {
+    setProjects([...projects, project]);
+  };
+
+  const deleteProject = (index: number) => {
+    setProjects(projects.filter((_, i) => i !== index));
+  };
 
   return (
     <div>
@@ -141,8 +185,9 @@ function App() {
       <Experiences experiences={experiences} />
       <Contact email={email} />
       <React.Fragment>
-        <Projects projects={projects} />
+        <Projects projects={projects} deleteProject={deleteProject} />
       </React.Fragment>
+      <CreateProject addProject={addProject}/>
     </div>
   )
 }
