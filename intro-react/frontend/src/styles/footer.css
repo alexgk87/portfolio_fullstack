@@ -1,0 +1,5 @@
+@layer components {
+    .footer {
+      @apply bg-dim-gray text-white text-center p-2 fixed bottom-0 w-full;
+    }
+  }

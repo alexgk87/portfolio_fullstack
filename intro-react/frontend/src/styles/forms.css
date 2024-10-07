@@ -1,0 +1,21 @@
+@layer components {
+    .form-container {
+      @apply flex flex-col items-center mt-1;
+    }
+  
+    label {
+      @apply w-full max-w-md;
+      text-align: left;
+    }
+  
+    textarea,
+    input[type="text"] {
+      @apply w-full max-w-md p-2 border rounded-lg mt-2;
+      resize: none;
+    }
+  
+    textarea {
+      @apply h-32;
+    }
+  }
+  

@@ -1,0 +1,40 @@
+@layer base, button;
+/* Default styling for hele applikasjonen. Eks font */
+body {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    padding: 0;
+    margin: 0;
+    background-color: #cccccc;
+}
+
+h1 {
+    color: #333333;
+    font-size: 2.5rem;
+    font-weight: 600;
+    text-align: center;
+    padding: 10px;
+}
+
+h2 {
+    color: #333333;
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+    padding: 10px;
+}
+
+h3 {
+    color: #333333;
+    font-size: 1.25rem;
+    text-align: center;
+    padding: 10px;
+    font-weight: 600;
+}
+
+p {
+    text-align: center;
+}
+
+.root {
+  padding-bottom: 4rem;
+}
