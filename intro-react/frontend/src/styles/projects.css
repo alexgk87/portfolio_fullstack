@@ -49,4 +49,20 @@
     .project-card:hover p {
         display: block;
     }
+
+    .tags-field {
+        display: none !important;
+    }
+
+    .isPublic-field {
+        display: none !important;
+    }
+
+    .published-field {
+        display: none !important;
+    }
+
+    .status-field {
+        display: none !important;
+    }
 }

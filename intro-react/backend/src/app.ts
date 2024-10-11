@@ -12,7 +12,7 @@ db.exec(`
     imageUrl TEXT,
     projectDescription TEXT,
     publishedAt TEXT,
-    isPublic BOOLEAN,
+    isPublic INTEGER NOT NULL,
     status TEXT CHECK(status IN ('draft', 'published')),
     tags TEXT
   );
@@ -29,6 +29,7 @@ app.post("/projects", async (c) => {
   const project = await c.req.json();
 
   const { id, projectTitle, imageUrl, projectDescription, publishedAt, isPublic, status, tags } = project;
+  const isPublicValue = isPublic ? 1 : 0;
 
   if (!projectTitle || !projectDescription) {
     return c.json({ error: 'Title and description are required' }, 400);
@@ -42,6 +43,7 @@ app.post("/projects", async (c) => {
     return c.json({ error: 'Tags must be an array' }, 400);
   }
 
+
   try {
     const query = `
       INSERT INTO projects (id, projectTitle, imageUrl, projectDescription, publishedAt, isPublic, status, tags)
@@ -54,13 +56,22 @@ app.post("/projects", async (c) => {
       imageUrl, 
       projectDescription, 
       publishedAt ?? null,
-      isPublic, 
+      isPublicValue, 
       status, 
       JSON.stringify(tags)
     ];
 
     db.prepare(query).run(values);
-    return c.json({ message: "Project created successfully" }, 201);
+    return c.json({
+      id,
+      projectTitle,
+      imageUrl,
+      projectDescription,
+      publishedAt: publishedAt ?? null,
+      isPublic, 
+      status,
+      tags
+    }, 201);
   } catch (error) {
     console.error("Error creating project:", error);
     return c.json({ error: "Failed to create project" }, 500);
