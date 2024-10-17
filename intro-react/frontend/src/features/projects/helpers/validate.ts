@@ -1,27 +1,20 @@
 import { z } from "zod";
 
 const projectSchema = z.object({
-  id: z.string().uuid().optional(),
+  id: z.string().uuid(),
   projectTitle: z.string().min(1, "Project title is required"),
-  imageUrl: z.string().nullable().optional(),
+  imageUrl: z.string(),
   projectDescription: z.string().min(1, "Project description is required"),
-  publishedAt: z.string().refine((value) => !isNaN(Date.parse(value)), {message: "Invalid date format",}).optional(),
-  isPublic: z.union([z.boolean(), z.number().min(0).max(1)]),
+  publishedAt: z.string().nullable().optional(),
+  isPublic: z.boolean(),
   status: z.enum(["draft", "published"]),
-  tags: z.preprocess((value) => {
-      if (typeof value === "string") {
-        try {
-          return JSON.parse(value);
-        } catch (e) {
-          return [];
-        }
-      }
-      return value;
-    },
-    z.array(z.string()).optional()
-  ),
+  tags: z.array(z.string()),
+});
+
+const newProjectSchema = projectSchema.omit({ id: true }).extend({
+  id: z.string().uuid().optional(),
 });
 
 const projectsSchema = z.array(projectSchema);
 
-export { projectSchema, projectsSchema };
+export { projectSchema, newProjectSchema, projectsSchema };
