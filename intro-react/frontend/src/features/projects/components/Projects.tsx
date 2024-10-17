@@ -2,24 +2,28 @@ import React from "react";
 import CreateNewProject from "./CreateNewProject";
 import useProjects from "../hooks/useProjects";
 import placeholderImage from '../../../../img/placeholder-image.jpg';
+import { ProjectProps } from "../../../../../shared/types";
 
 export function Projects() {
   const { projects, status, removeProject, addProject, error } = useProjects();
 
-  const projectCount = projects.length;
-
   if (status === "loading") return <p>Loading projects...</p>;
   if (status === "error") return <p>Error: {error}</p>;
+
+  //console.log("Status:", status);
+  //console.log("Projects array length:", projects.length);
+  //console.log("Projects:", JSON.stringify(projects, null, 2));
 
   return (
     <div>
       <h2>Projects</h2>
-      <p>Total Projects: {projectCount}</p>
+      <p>Total Projects: {projects?.length || 0}</p>
 
-      {projectCount > 0 ? (
+      {projects && projects.length > 0 ? (
         <div className="projects-grid">
-          {projects.map((project, index) => (
-            <div key={index} className="relative group">
+          {projects.map((project: ProjectProps) => {
+            return (
+            <div key={project.id} className="relative group">
               <h3>{project.projectTitle}</h3>
               <div className="project-card">
                 <img
@@ -45,7 +49,7 @@ export function Projects() {
                 <button onClick={() => removeProject(project.id)}>Delete</button>
               </div>
             </div>
-          ))}
+          )})}
         </div>
       ) : (
         <p>No projects available.</p>

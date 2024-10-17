@@ -1,7 +1,8 @@
 import { useState, useCallback, useEffect } from "react";
 import { ProjectProps } from "../../../../../shared/types";
 import { projectSchema, newProjectSchema } from "../helpers/validate";
-import { api } from "../services/api";
+import { fetchProjects, addNewProject, deleteProject } from "../services/projectService";
+import { endpoints } from "../../../config/config";
 
 type Status = "idle" | "loading" | "error" | "success";
 
@@ -14,7 +15,8 @@ export function useProjects() {
   const fetchData = useCallback(async () => {
     try {
       setStatus("loading");
-      const fetchedProjects = await api.fetchProjects();
+      const response = await fetchProjects(endpoints.projects);
+      const fetchedProjects = Array.isArray(response) ? response : response.data;
       setProjects(fetchedProjects ?? []);
       setStatus("success");
     } catch (error) {
@@ -45,45 +47,31 @@ export function useProjects() {
         ...validationResult.data,
         id: crypto.randomUUID(),
       };
-  
-      const createdProject = await api.addProject(newProject);
-  
-      console.log("New project added:", createdProject);
-  
-      setProjects((prevProjects) => [...prevProjects, createdProject]);
+
+      await addNewProject(newProject, endpoints.projects);
+      setProjects((prevProjects) => [...prevProjects, newProject]);
+      setLoading(false);
     } catch (error) {
-      console.error("Error creating project:", error);
-      setError("Failed to create project");
-    } finally {
+      console.error("Error adding project:", error);
+      setError("Failed to add project");
       setLoading(false);
     }
   };
 
-  const removeProject = async (id: string) => {
+  const removeProject = async (projectId: string) => {
     try {
       setLoading(true);
-      console.log(`Deleting project with id: ${id}`);
-  
-      await api.removeProject(id);
-  
-      console.log("Project deleted successfully");
-  
-      setProjects((prevProjects) => prevProjects.filter((project) => project.id !== id));
+      await deleteProject(projectId, endpoints.projects);
+      setProjects((prevProjects) => prevProjects.filter(project => project.id !== projectId));
+      setLoading(false);
     } catch (error) {
       console.error("Error removing project:", error);
       setError("Failed to remove project");
-    } finally {
       setLoading(false);
     }
   };
 
-  return {
-    projects,
-    addProject,
-    removeProject,
-    error,
-    status,
-  };
+  return { projects, status, addProject, removeProject, error };
 }
 
 export default useProjects;

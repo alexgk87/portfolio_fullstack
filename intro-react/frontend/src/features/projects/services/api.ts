@@ -1,28 +1,33 @@
-import { ofetch } from "ofetch";
 import { ProjectProps } from "../../../../../shared/types";
-
-const API_BASE_URL = "http://localhost:3000";
+import { endpoints } from "../../../config/config";
 
 export const api = {
-  fetchProjects: async (): Promise<ProjectProps[]> => {
-    const response = await ofetch(`${API_BASE_URL}/projects`);
-    return response.data;
-  },
-
-  addProject: async (project: ProjectProps): Promise<ProjectProps> => {
-    const response = await ofetch(`${API_BASE_URL}/projects`, {
-      method: "POST",
-      body: project,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    return response;
-  },
-
-  removeProject: async (id: string): Promise<void> => {
-    await ofetch(`${API_BASE_URL}/projects/${id}`, {
-      method: "DELETE",
-    });
-  },
-};
+    fetchProjects: async (url: string): Promise<ProjectProps[]> => {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Failed to fetch projects");
+      }
+      const data = await response.json();
+      return data;
+    },
+    addProject: async (project: ProjectProps, url: string): Promise<void> => {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(project),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to add project");
+      }
+    },
+    deleteProject: async (projectId: string, url: string): Promise<void> => {
+      const response = await fetch(`${url}/${projectId}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to delete project");
+      }
+    },
+  };
