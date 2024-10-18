@@ -1,13 +1,20 @@
 import { useState, useCallback, useEffect } from "react";
 import { ProjectProps } from "../../../../../shared/types";
-import { projectSchema, newProjectSchema } from "../helpers/validate";
-import { fetchProjects, addNewProject, deleteProject } from "../services/projectService";
+import { newProjectSchema } from "../helpers/validate";
+import { fetchProjects, addNewProject, deleteProject, fetchProjectById } from "../services/projectService";
 import { endpoints } from "../../../config/config";
 
 type Status = "idle" | "loading" | "error" | "success";
 
+const normalizeProjectData = (project: any): ProjectProps => ({
+  ...project,
+  isPublic: project.isPublic === 1,
+  tags: Array.isArray(project.tags) ? project.tags : JSON.parse(project.tags || '[]'),
+});
+
 export function useProjects() {
   const [projects, setProjects] = useState<ProjectProps[]>([]);
+  const [project, setProject] = useState<ProjectProps | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<Status>("idle");
@@ -23,6 +30,23 @@ export function useProjects() {
       console.error("Error fetching data:", error);
       setStatus("error");
       setError("Failed to fetch data");
+    }
+  }, []);
+
+  const fetchASingleProject = useCallback(async (projectId: string) => {
+    setLoading(true);
+    setError(null);
+    try {
+      console.log('Fetching project with ID:', projectId);
+      const fetchedProject = await fetchProjectById(projectId);
+      console.log('Fetched project:', fetchedProject);
+      setProject(normalizeProjectData(fetchedProject));
+    } catch (err) {
+      console.error('Error fetching project:', err);
+      setError("Failed to fetch project details");
+      setProject(null);
+    } finally {
+      setLoading(false);
     }
   }, []);
 
@@ -71,7 +95,7 @@ export function useProjects() {
     }
   };
 
-  return { projects, status, addProject, removeProject, error };
+  return { projects, project, status, loading, addProject, removeProject, fetchASingleProject, error };
 }
 
 export default useProjects;

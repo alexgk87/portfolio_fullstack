@@ -11,6 +11,17 @@ app.get('/projects', (c) => {
   return c.json({ data: projects });
 });
 
+app.get('/projects/:id', (c) => {
+  const { id } = c.req.param();
+  const project = db.prepare('SELECT * FROM projects WHERE id = ?').get(id);
+
+  if (!project) {
+    return c.json({ error: 'Project not found' }, 404);
+  }
+
+  return c.json({ data: project });
+});
+
 app.post("/projects", async (c) => {
   const project = await c.req.json();
 

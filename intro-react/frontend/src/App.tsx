@@ -1,5 +1,7 @@
 import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Projects from "./features/projects/components/Projects";
+import ProjectDetail from "./features/projects/components/ProjectDetail";
 import { Header, student, degree, points } from './components/Header';
 import { Experiences, experiences } from './components/Experiences';
 import { Contact, email } from './components/Contact';
@@ -7,14 +9,21 @@ import Layout from "./components/Layout";
 
 const App = () => {
   return (
-    <Layout>
-    <div>
-      <Header student={student} degree={degree} points={points} />
-      <Experiences experiences={experiences} />
-      <Contact email={email} />
-      <Projects />
-    </div>
-    </Layout>
+    <Router>
+      <Layout>
+        <Routes>
+          <Route path="/projects/:projectId" element={<ProjectDetail />} />
+          <Route path="/" element={
+            <div>
+              <Header student={student} degree={degree} points={points} />
+              <Experiences experiences={experiences} />
+              <Contact email={email} />
+              <Projects />
+            </div>
+          } />
+        </Routes>
+      </Layout>
+    </Router>
   );
 }
 
