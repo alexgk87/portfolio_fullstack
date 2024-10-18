@@ -1,23 +1,8 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import Database from 'better-sqlite3';
+import db from './db/db';
 
 const app = new Hono();
-const db = new Database('projects.db');
-
-db.exec(`
-  CREATE TABLE IF NOT EXISTS projects (
-    id TEXT PRIMARY KEY,
-    projectTitle TEXT,
-    imageUrl TEXT,
-    projectDescription TEXT,
-    publishedAt TEXT,
-    isPublic INTEGER NOT NULL,
-    status TEXT CHECK(status IN ('draft', 'published')),
-    tags TEXT,
-    projectUrl TEXT
-  );
-`);
 
 app.use("/*", cors({origin: 'http://localhost:5173'}));
 
