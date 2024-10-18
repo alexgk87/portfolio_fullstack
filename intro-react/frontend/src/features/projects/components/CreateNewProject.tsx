@@ -14,7 +14,8 @@ export default function CreateNewProject({ addProject }: CreateNewProjectProps) 
     publishedAt: "",
     isPublic: false,
     status: "draft" as "draft" | "published",
-    tags: ""
+    tags: "",
+    projectUrl: ""
   };
 
   const validate = (field: keyof typeof initialFields, value: string | boolean) => {
@@ -71,6 +72,10 @@ export default function CreateNewProject({ addProject }: CreateNewProjectProps) 
         <label>
           Tags (comma separated):
           <input type="text" {...getFieldProps('tags')} />
+        </label>
+        <label>
+          Github URL:
+          <input type="text" {...getFieldProps('projectUrl')} />
         </label>
       </div>
       <div className="button-container">

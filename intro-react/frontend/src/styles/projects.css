@@ -18,7 +18,7 @@
         border-radius: 0.5rem;
         overflow: hidden;
     }
-  
+
     .project-card img {
         position: absolute;
         inset: 0;
@@ -27,11 +27,11 @@
         object-fit: cover;
         transition: all 0.3s ease-in-out;
     }
-  
+
     .project-card:hover {
         background-color: #6b7280;
     }
-  
+
     .project-card p {
         display: none;
         color: #000;
@@ -44,21 +44,29 @@
         padding: 1rem;
         border-radius: 0.25rem;
         opacity: 0.8;
-    }    
-  
+    }
+
     .project-card:hover p {
         display: block;
     }
 
-    .tags-field {
+    .tags-field, .isPublic-field, .status-field {
         display: none !important;
     }
 
-    .isPublic-field {
-        display: none !important;
+    .project-url a {
+        color: #1d4ed8;
+        text-decoration: underline;
+        font-weight: 500;
+        transition: color 0.3s ease;
     }
 
-    .status-field {
-        display: none !important;
+    .project-url a:hover {
+        color: #111111;
+        text-decoration: none;
+    }
+
+    .project-url a:visited {
+        color: purple;
     }
 }

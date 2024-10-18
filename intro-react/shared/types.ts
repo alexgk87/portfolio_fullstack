@@ -7,4 +7,5 @@ export type ProjectProps = {
   isPublic: boolean;
   status: "draft" | "published";
   tags: string[];
+  projectUrl: string;
 };

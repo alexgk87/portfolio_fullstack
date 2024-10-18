@@ -14,7 +14,8 @@ db.exec(`
     publishedAt TEXT,
     isPublic INTEGER NOT NULL,
     status TEXT CHECK(status IN ('draft', 'published')),
-    tags TEXT
+    tags TEXT,
+    projectUrl TEXT
   );
 `);
 
@@ -28,7 +29,7 @@ app.get('/projects', (c) => {
 app.post("/projects", async (c) => {
   const project = await c.req.json();
 
-  const { id, projectTitle, imageUrl, projectDescription, publishedAt, isPublic, status, tags } = project;
+  const { id, projectTitle, imageUrl, projectDescription, publishedAt, isPublic, status, tags, projectUrl } = project;
   const isPublicValue = isPublic ? 1 : 0;
 
   if (!projectTitle || !projectDescription) {
@@ -46,8 +47,8 @@ app.post("/projects", async (c) => {
 
   try {
     const query = `
-      INSERT INTO projects (id, projectTitle, imageUrl, projectDescription, publishedAt, isPublic, status, tags)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO projects (id, projectTitle, imageUrl, projectDescription, publishedAt, isPublic, status, tags, projectUrl)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
     const values = [
@@ -58,7 +59,8 @@ app.post("/projects", async (c) => {
       publishedAt ?? null,
       isPublicValue, 
       status, 
-      JSON.stringify(tags)
+      JSON.stringify(tags),
+      projectUrl
     ];
 
     db.prepare(query).run(values);
@@ -70,7 +72,8 @@ app.post("/projects", async (c) => {
       publishedAt: publishedAt ?? null,
       isPublic, 
       status,
-      tags
+      tags,
+      projectUrl
     }, 201);
   } catch (error) {
     console.error("Error creating project:", error);

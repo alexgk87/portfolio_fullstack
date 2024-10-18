@@ -9,6 +9,7 @@ const projectSchema = z.object({
   isPublic: z.boolean(),
   status: z.enum(["draft", "published"]),
   tags: z.array(z.string()),
+  projectUrl: z.string(),
 });
 
 const newProjectSchema = projectSchema.omit({ id: true }).extend({

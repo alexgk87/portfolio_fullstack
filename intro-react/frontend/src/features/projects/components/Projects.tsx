@@ -28,16 +28,10 @@ export function Projects() {
               <h3>{project.projectTitle}</h3>
               <p className="published-field">
                 <p>Published: </p> 
-                {project.publishedAt 
-                  ? formatDistance(new Date(project.publishedAt)) 
-                  : "Not published"}
+                {project.publishedAt ? formatDistance(new Date(project.publishedAt)) : "Not published"}
               </p>
               <div className="project-card">
-                <img
-                  src={project.imageUrl || placeholderImage}
-                  alt={`${project.projectTitle} image`}
-                  className="w-full h-full object-cover"
-                />
+                <img src={project.imageUrl || placeholderImage} alt={`${project.projectTitle} image`} />
                 <p>{project.projectDescription}</p>
                 <p className="status-field">
                   <strong>Status:</strong> {project.status}
@@ -49,6 +43,9 @@ export function Projects() {
                   <strong>Tags:</strong> {Array.isArray(project.tags) ? project.tags.join(", ") : "No tags available"}
                 </p>
               </div>
+              <p className="project-url">
+                <a href={project.projectUrl} target="_blank" rel="noreferrer">Github link</a>
+              </p>
               <div className="button-container">
                 <button onClick={() => removeProject(project.id)}>Delete</button>
               </div>
