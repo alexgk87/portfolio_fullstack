@@ -3,6 +3,7 @@ import CreateNewProject from "./CreateNewProject";
 import useProjects from "../hooks/useProjects";
 import placeholderImage from '../../../../img/placeholder-image.jpg';
 import { ProjectProps } from "../../../../../shared/types";
+import { formatDistance } from "../helpers/format";
 
 export function Projects() {
   const { projects, status, removeProject, addProject, error } = useProjects();
@@ -25,6 +26,12 @@ export function Projects() {
             return (
             <div key={project.id} className="relative group">
               <h3>{project.projectTitle}</h3>
+              <p className="published-field">
+                <p>Published: </p> 
+                {project.publishedAt 
+                  ? formatDistance(new Date(project.publishedAt)) 
+                  : "Not published"}
+              </p>
               <div className="project-card">
                 <img
                   src={project.imageUrl || placeholderImage}
@@ -32,9 +39,6 @@ export function Projects() {
                   className="w-full h-full object-cover"
                 />
                 <p>{project.projectDescription}</p>
-                <p className="published-field">
-                  <strong>Published At:</strong> {project.publishedAt ? new Date(project.publishedAt).toLocaleDateString() : "Not published"}
-                </p>
                 <p className="status-field">
                   <strong>Status:</strong> {project.status}
                 </p>
