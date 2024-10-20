@@ -6,6 +6,7 @@ import { Header, student, degree, points } from './components/Header';
 import { Experiences, experiences } from './components/Experiences';
 import { Contact, email } from './components/Contact';
 import Layout from "./components/Layout";
+import EditProject from "./features/projects/components/EditProject";
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
       <Layout>
         <Routes>
           <Route path="/projects/:projectId" element={<ProjectDetail />} />
+          <Route path="/projects/:projectId/edit" element={<EditProject />} />
           <Route path="/" element={
             <div>
               <Header student={student} degree={degree} points={points} />

@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { ProjectProps } from "../../../../../shared/types";
 import { newProjectSchema } from "../helpers/validate";
-import { fetchProjects, addNewProject, deleteProject, fetchProjectById } from "../services/projectService";
+import { fetchProjects, addNewProject, deleteProject, fetchProjectById, updateProjectInDB } from "../services/projectService";
 import { endpoints } from "../../../config/config";
 
 type Status = "idle" | "loading" | "error" | "success";
@@ -82,6 +82,19 @@ export function useProjects() {
     }
   };
 
+  const updateProject = async (updatedProject: ProjectProps) => {
+    try {
+      await updateProjectInDB(updatedProject, endpoints.projects);
+      setProjects((prevProjects) =>
+        prevProjects.map((proj) =>
+          proj.id === updatedProject.id ? updatedProject : proj
+        )
+      );
+    } catch (error) {
+      setError("Failed to update project");
+    }
+  };
+
   const removeProject = async (projectId: string) => {
     try {
       setLoading(true);
@@ -95,7 +108,7 @@ export function useProjects() {
     }
   };
 
-  return { projects, project, status, loading, addProject, removeProject, fetchASingleProject, error };
+  return { projects, project, status, loading, addProject, removeProject, fetchASingleProject, updateProject, error };
 }
 
 export default useProjects;

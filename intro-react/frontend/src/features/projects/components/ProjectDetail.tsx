@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import useProjects from "../hooks/useProjects";
 
 const ProjectDetail: React.FC = () => {
@@ -21,6 +21,7 @@ const ProjectDetail: React.FC = () => {
     if (error) return <div>{error}</div>;
   
     return (
+      
       <div style={{ padding: "20px", backgroundColor: "#f9f9f9" }}>
         <h1>{project?.projectTitle}</h1>
         <p>{project?.projectDescription}</p>
@@ -38,12 +39,18 @@ const ProjectDetail: React.FC = () => {
         {project?.projectUrl && (
           <p>
             <a href={project.projectUrl} target="_blank" rel="noopener noreferrer">
-              Project URL
+              Github link
             </a>
           </p>
         )}
+        {project && (
+          <Link to={`/projects/${project.id}/edit`}>
+            <button className="edit-button">Edit project</button>
+          </Link>
+        )}
       </div>
-    );
+      
+    ); 
   };
   
   export default ProjectDetail;

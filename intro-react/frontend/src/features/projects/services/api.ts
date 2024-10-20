@@ -10,6 +10,18 @@ export const api = {
       const data = await response.json();
       return data;
     },
+    editProject: async (projectId: string, updatedProject: ProjectProps, url: string): Promise<void> => {
+      const response = await fetch(`${url}/${projectId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedProject),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to update project");
+      }
+    },
     addProject: async (project: ProjectProps, url: string): Promise<void> => {
       const response = await fetch(url, {
         method: "POST",

@@ -28,3 +28,17 @@ export async function fetchProjectById(projectId: string): Promise<ProjectProps>
     throw new Error('Project data not found in the response');
   }
 }
+
+export async function updateProjectInDB(project: ProjectProps, url: string): Promise<void> {
+  const response = await fetch(`${url}/${project.id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(project),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to update project");
+  }
+}

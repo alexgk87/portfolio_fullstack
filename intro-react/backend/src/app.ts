@@ -22,6 +22,57 @@ app.get('/projects/:id', (c) => {
   return c.json({ data: project });
 });
 
+app.put("/projects/:id", async (c) => {
+  const { id } = c.req.param();
+  const projectData = await c.req.json();
+
+  const { projectTitle, imageUrl, projectDescription, publishedAt, isPublic, status, tags, projectUrl } = projectData;
+  const isPublicValue = isPublic ? 1 : 0;
+
+  if (!projectTitle || !projectDescription) {
+    return c.json({ error: 'Title and description are required' }, 400);
+  }
+
+  if (status !== "draft" && status !== "published") {
+    return c.json({ error: 'Invalid status' }, 400);
+  }
+
+  if (tags && !Array.isArray(tags)) {
+    return c.json({ error: 'Tags must be an array' }, 400);
+  }
+
+  try {
+    const query = `
+      UPDATE projects
+      SET projectTitle = ?, imageUrl = ?, projectDescription = ?, publishedAt = ?, isPublic = ?, status = ?, tags = ?, projectUrl = ?
+      WHERE id = ?
+    `;
+
+    const values = [
+      projectTitle,
+      imageUrl,
+      projectDescription,
+      publishedAt ?? null,
+      isPublicValue,
+      status,
+      JSON.stringify(tags),
+      projectUrl,
+      id
+    ];
+
+    const result = db.prepare(query).run(values);
+
+    if (result.changes === 0) {
+      return c.json({ error: 'Project not found or no changes made' }, 404);
+    }
+
+    return c.json({ message: "Project updated successfully" }, 200);
+  } catch (error) {
+    console.error("Error updating project:", error);
+    return c.json({ error: "Failed to update project" }, 500);
+  }
+});
+
 app.post("/projects", async (c) => {
   const project = await c.req.json();
 
