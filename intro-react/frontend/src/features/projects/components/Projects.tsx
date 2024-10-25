@@ -30,7 +30,7 @@ export function Projects() {
               <p className="published-field">
                 <p>Published: </p> 
                 {project.publishedAt ? formatDistance(new Date(project.publishedAt)) : "Not published"}
-              </p>
+                </p>
               <div className="project-card">
                 <Link to={`/projects/${project.id}`}>
                   <img src={project.imageUrl || placeholderImage} alt={project.projectTitle} />

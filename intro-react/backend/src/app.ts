@@ -1,8 +1,31 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import db from './db/db';
+import { DB, db } from './db/db';
+import { Logger } from "./lib/logger";
+import { ServerEnv } from "./lib/env";
 
-const app = new Hono();
+const app = new Hono<HonoEnv>();
+
+type User = {
+  username: string;
+  email: string;
+}
+
+type ContextVariables = {
+  user: User | null; 
+}
+
+export type ServiceContext = {
+  db: DB;
+  logger: Logger;
+};
+
+export type HonoEnv = {
+  Bindings: ServerEnv;
+  Variables: {
+    services: ServiceContext;
+  } & ContextVariables;
+};
 
 app.use("/*", cors({origin: 'http://localhost:5173'}));
 
