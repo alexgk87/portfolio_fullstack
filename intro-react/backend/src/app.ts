@@ -3,6 +3,8 @@ import { cors } from "hono/cors";
 import { DB, db } from './db/db';
 import { Logger } from "./lib/logger";
 import { ServerEnv } from "./lib/env";
+import { z } from "zod";
+import { projectSchema, newProjectSchema } from "./types";
 
 const app = new Hono<HonoEnv>();
 
@@ -97,6 +99,53 @@ app.put("/projects/:id", async (c) => {
 });
 
 app.post("/projects", async (c) => {
+  try {
+    const projectData = await c.req.json();
+    
+    const validation = newProjectSchema.safeParse(projectData);
+    if (!validation.success) {
+      return c.json({ error: validation.error.errors.map(e => e.message) }, 400);
+    }
+    
+    const { id, projectTitle, imageUrl, projectDescription, publishedAt, isPublic, status, tags, projectUrl } = validation.data;
+    const isPublicValue = isPublic ? 1 : 0;
+    
+    const query = `
+      INSERT INTO projects (id, projectTitle, imageUrl, projectDescription, publishedAt, isPublic, status, tags, projectUrl)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+    
+    const values = [
+      id ?? null, 
+      projectTitle, 
+      imageUrl, 
+      projectDescription, 
+      publishedAt ?? null,
+      isPublicValue, 
+      status, 
+      JSON.stringify(tags),
+      projectUrl
+    ];
+    
+    db.prepare(query).run(values);
+    return c.json({
+      id,
+      projectTitle,
+      imageUrl,
+      projectDescription,
+      publishedAt: publishedAt ?? null,
+      isPublic, 
+      status,
+      tags,
+      projectUrl
+    }, 201);
+  } catch (error) {
+    console.error("Error creating project:", error);
+    return c.json({ error: "Failed to create project" }, 500);
+  }
+});
+
+/*app.post("/projects", async (c) => {
   const project = await c.req.json();
 
   const { id, projectTitle, imageUrl, projectDescription, publishedAt, isPublic, status, tags, projectUrl } = project;
@@ -149,7 +198,7 @@ app.post("/projects", async (c) => {
     console.error("Error creating project:", error);
     return c.json({ error: "Failed to create project" }, 500);
   }
-});
+});*/
 
 app.delete("/projects/:id", (c) => {
   const { id } = c.req.param();

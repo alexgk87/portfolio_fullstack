@@ -1,4 +1,4 @@
-import type { ResultFn } from "@/../shared/types";
+import type { ResultFn } from "../../../shared/types";
 import { ApiError } from "./error";
 
 // Definerer ResultHandler-objektet som implementerer ResultFn-typen

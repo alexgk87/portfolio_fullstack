@@ -1,3 +1,5 @@
+import { ErrorCode } from "@backend/lib/error";
+
 export type ProjectProps = {
   id: string;
   projectTitle: string;
@@ -11,7 +13,7 @@ export type ProjectProps = {
 };
 
 
-/*
+
 // Definerer en type for unike identifikatorer ved hjelp av crypto.randomUUID
 export type ID = ReturnType<typeof crypto.randomUUID>;
 
@@ -42,4 +44,4 @@ export type Result<T> = Data<T> | Error;
 export type ResultFn = {
   success: <T>(data: T) => Data<T>;
   failure: (error: unknown, code: ErrorCode) => Error;
-};*/
+}
